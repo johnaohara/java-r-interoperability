@@ -6,10 +6,14 @@ public class DataPoints {
 
 
     public static Double[] generateChangeSet(int size, int changePoints) {
-        return generateChangeSet(size, changePoints, false, null);
+        return generateChangeSet(size, changePoints, 3, 2, false, null);
     }
 
-    public static Double[] generateChangeSet(int size, int changePoints, boolean uniform, Long seed) {
+    public static Double[] generateChangeSet(int size, int changePoints, float varianceSize , float offset) {
+        return generateChangeSet(size, changePoints, varianceSize, offset, false, null);
+    }
+
+    public static Double[] generateChangeSet(int size, int changePoints, float varianceSize , float offset,  boolean uniform, Long seed) {
 
         if (uniform) {
             //todo
@@ -30,7 +34,7 @@ public class DataPoints {
         int curSet = 0;
         while (allocated < size) {
             for (int counter = 0; counter < setSize && allocated < size; counter++) {
-                set[allocated] = (curSet%2 ==0) ?  rnd.nextDouble() : rnd.nextDouble() * 3 + 2;
+                set[allocated] = (curSet%2 ==0) ?  rnd.nextDouble() : rnd.nextDouble() * varianceSize + offset;
                 allocated ++;
             }
             curSet++;

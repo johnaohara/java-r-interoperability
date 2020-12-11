@@ -51,19 +51,35 @@ public class ScriptUtils {
         }
     }
 
-    public static File writeArrayToFile(Object outputArray) {
+    public static File writeArrayToFile(Object... outputArray) {
 
-        if( !(outputArray instanceof Double[])){
-            throw new IllegalArgumentException("Needs to be instance of a double array");
+        if (!(outputArray instanceof Double[]) &&
+                !(outputArray instanceof Object[])) {
+            throw new IllegalArgumentException("Needs to be instance of a double array or object array");
         }
+
 
         try {
             File tmpFile = File.createTempFile("javaInterop", ".data");
             try (FileWriter fw = new FileWriter(tmpFile)) {
-                for (int row = 0; row < ((Double[])outputArray).length; row++) {
-                    fw.write(String.valueOf(((Double[])outputArray)[row]));
-                    fw.write("\n");
+
+                if (outputArray instanceof Double[]) {
+                    for (int row = 0; row < ((Double[]) outputArray).length; row++) {
+                        writeLine(fw, String.valueOf(((Double[])outputArray)[row]));
+                    }
+                } else {
+                    StringBuilder rowBuilder = new StringBuilder();
+                    for (int row = 0; row < ((Double[]) outputArray[0]).length; row++) {
+                        rowBuilder.append(((Double[]) outputArray[0])[row]);
+                        for(int col = 1; col < outputArray.length; col++){
+                            rowBuilder.append(" ");
+                            rowBuilder.append(((Double[]) outputArray[col])[row]);
+                        }
+                        writeLine(fw, rowBuilder.toString());
+                        rowBuilder.setLength(0); //reset stringBuilder
+                    }
                 }
+
             }
             return tmpFile;
         } catch (IOException e) {
@@ -71,5 +87,10 @@ public class ScriptUtils {
         }
 
         return null;
+    }
+
+    private static void writeLine(FileWriter fw, String line) throws IOException {
+        fw.write(line);
+        fw.write("\n");
     }
 }
