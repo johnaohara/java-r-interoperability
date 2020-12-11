@@ -1,7 +1,71 @@
 package io.hyperfoil.horreum.test;
 
+import java.util.Random;
+
 public class DataPoints {
 
+
+    public static Double[] generateChangeSet(int size, int changePoints) {
+        return generateChangeSet(size, changePoints, false, null);
+    }
+
+    public static Double[] generateChangeSet(int size, int changePoints, boolean uniform, Long seed) {
+
+        if (uniform) {
+            //todo
+        } else {
+            //todo
+        }
+
+        Random rnd = null;
+        if (seed != null) {
+            rnd = new Random(seed);
+        } else {
+            rnd = new Random();
+        }
+
+        Double[] set = new Double[size];
+        int allocated = 0;
+        int setSize = size / (changePoints + 1);
+        int curSet = 0;
+        while (allocated < size) {
+            for (int counter = 0; counter < setSize && allocated < size; counter++) {
+                set[allocated] = (curSet%2 ==0) ?  rnd.nextDouble() : rnd.nextDouble() * 3 + 2;
+                allocated ++;
+            }
+            curSet++;
+        }
+        return set;
+    }
+
+    public static Object generateMultiDimArray() {
+
+
+        return null;
+    }
+
+    public static String smallSetAsStringVector() {
+        return vectorizeArray(smallSet);
+    }
+
+    public static String largeSetAsStringVector() {
+        return vectorizeArray(largeSet);
+    }
+
+    private static String vectorizeArray(Double[] arr) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("c(");
+        for (int counter = 0; counter < arr.length; counter++) {
+            builder.append(arr[counter]);
+            builder.append(",");
+        }
+        builder.deleteCharAt(builder.length() - 1);
+        builder.append(")");
+        return builder.toString();
+
+    }
+
+    //Just some statically defined arrays
     public static final Double[] smallSet = {
             0.626779843,
             0.957793042,
@@ -448,24 +512,5 @@ public class DataPoints {
             0.300240519
     };
 
-    public static String smallSetAsStringVector(){
-        return vectorizeArray(smallSet);
-    }
-    public static String largeSetAsStringVector(){
-        return vectorizeArray(largeSet);
-    }
-
-    private static String vectorizeArray(Double[] arr){
-        StringBuilder builder = new StringBuilder();
-        builder.append("c(");
-        for(int counter = 0; counter < arr.length; counter++){
-            builder.append(arr[counter]);
-            builder.append(",");
-        }
-        builder.deleteCharAt(builder.length()-1);
-        builder.append(")");
-        return builder.toString();
-
-    }
 
 }

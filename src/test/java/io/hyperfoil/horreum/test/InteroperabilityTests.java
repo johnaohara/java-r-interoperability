@@ -2,7 +2,10 @@ package io.hyperfoil.horreum.test;
 
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import java.io.File;
 
 import static org.junit.Assert.*;
 
@@ -92,4 +95,47 @@ public class InteroperabilityTests {
                 , msg -> {}); //test should fail to execute
     }
 
+    @Test
+    public void passMatrixAsFile(){
+
+        File dataFile = ScriptUtils.writeArrayToFile(DataPoints.largeSet);
+
+        System.out.printf("Data file: %s\n", dataFile.getAbsolutePath());
+
+        ScriptUtils.loadScript("eDivisiveMeanFile.R", function -> {
+                    Value result = function.execute(dataFile.getAbsolutePath(), 1);
+                    ScriptUtils.printResultArray(result);
+                }
+                , msg -> fail(msg));
+
+
+    }
+
+    @Test
+    public void passMultiDimMatrixAsFile(){
+
+        File dataFile = ScriptUtils.writeArrayToFile(DataPoints.largeSet);
+
+        System.out.printf("Data file: %s\n", dataFile.getAbsolutePath());
+
+        ScriptUtils.loadScript("eDivisiveMeanFile.R", function -> {
+                    Value result = function.execute(dataFile.getAbsolutePath(), 1);
+                    ScriptUtils.printResultArray(result);
+                }
+                , msg -> fail(msg));
+    }
+
+    @Test
+    public void testDynamicArray(){
+
+        Double[] dataArray = DataPoints.generateChangeSet(400,2);
+        File dataFile = ScriptUtils.writeArrayToFile(dataArray);
+        System.out.printf("Data file: %s\n", dataFile.getAbsolutePath());
+
+        ScriptUtils.loadScript("eDivisiveMeanFile.R", function -> {
+                    Value result = function.execute(dataFile.getAbsolutePath(), 1);
+                    ScriptUtils.printResultArray(result);
+                }
+                , msg -> fail(msg));
+    }
 }
