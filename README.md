@@ -3,10 +3,22 @@ Java & R interoperability with GraalVM
 
 Repo to demonstrate the interoperability between Java and R using GraalVM
 
-Example to determine multiple change points in data-set using `e.divisive` from the R `ecp` package
+Example to determine multiple change points in data-set using top down 'E-divisive with Means' `e.divisive` & `e.agglo` from the R `ecp` package
 
-Install
--------
+
+`e.agglo` Results
+-----------------
+
+Change point detection in dataset with large signal-to-noise ration
+
+![Large Signal to Noise Ration](img/largeSignalNoiseRatio.png)
+
+Change point detection in dataset with small signal-to-noise ration
+
+![Low Signal to Noise Ration](img/smallSignalNoiseRatio.png)
+
+Running Example
+---------------
 
 This demo relies on GraalVM with the R runtime installed
 
